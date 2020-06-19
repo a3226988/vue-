@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="app">
+			111{{msg}}1111
+			<button @click="getData">加载</button>
+		</div>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			var vm = new Vue({
+				el:"#app",
+				data:{
+					msg:'初始值'
+				},
+				methods:{
+					getData(){
+						var that = this;
+						axios.get("http://localhost:8888/asyn/pagelist").then(function(r){
+							//异步请求完毕后，将请求的到的数据显示到页面中
+							//将请求响应的数据赋值给当前vue示例的data属性里
+							//不能使用this来表示vue示例，需要直接使用vue的示例对象变量
+							that.msg = r.data;
+							console.log(that.msg);
+						});
+					}
+				}
+			})
+			
+			
+		</script>
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+		<button onclick="axiostest()">发送异步请求</button>
+		<button onclick="crsoajax()">发送跨域请求</button>
+		<button onclick="crosajaxsendmsg()">发送跨域请求传递参数</button>
+		<button onclick="allajax()">并发请求</button>
+		<script type="text/javascript">
+			// 人事系统项目的url http://127.0.0.1:8888/login
+			// 当前项目的url     http://127.0.0.1:8848/Vue/vue06/
+			function axiostest(){
+				
+				axios.get("json/data.json").then(function(r){
+					console.log(r.data);
+				});
+			}
+			
+			function crsoajax(){
+				axios.get("http://localhost:8888/asyn/list").then(function(r){
+					console.log(r.data);
+				});
+			}
+			
+			function crosajaxsendmsg(){
+				/* axios.get("http://localhost:8888/asyn/list").then(function(r){
+					console.log(r.data);
+				}); */
+				
+				/* axios.get("http://localhost:8888/asyn/list?id=1&name=张三").then(function(r){
+					console.log(r.data);
+				}); */
+				/* axios.get("http://localhost:8888/asyn/list",{
+					params:{
+						id:1,
+						name:"张三"
+					}
+				}).then(function(r){
+					console.log(r.data);
+				}); */
+				
+				//针对post请求的参数传递
+				//1、将参数封装到URLSearchParams
+				//var params = new URLSearchParams();
+				//params.append("id",1)
+				//params.append("name","张三");
+				//2、直接传递参数对象，在服务端接收时使用springmvc的@requestbody注解接收参数
+				
+				
+				/* var params = new URLSearchParams();
+				params.append("id",1)
+				params.append("name","张三");
+				
+				axios.post("http://localhost:8888/asyn/list",params)
+				.then(function(r){
+					console.log(r.data);
+				}); */
+				
+				axios.post("http://localhost:8888/asyn/list",{
+					id:1,
+					name:"张三"
+				})
+				.then(function(r){
+					console.log(r.data);
+				});
+			}
+			
+			function allajax(){
+				function getUserAccount() {
+				  return axios.get('http://localhost:8888/asyn/list');
+				}
+				
+				function getUserPermissions() {
+				  return axios.get('http://localhost:8888/asyn/pagelist');
+				}
+				axios.all([getUserAccount(),getUserPermissions()]).then(axios.spread(function (acct, perms) {
+					// 两个请求现在都执行完成
+					console.log(acct);
+					console.log(perms);
+				  }));
+			}
+		</script>
+	</body>
+</html>

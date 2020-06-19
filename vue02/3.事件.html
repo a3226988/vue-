@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="app">
+			<p @click="msg += '  '+ msg">{{msg}}</p>
+			<p onclick="vm.sayhello()">tests</p>
+			<p @click.capture.self="fun1">capture
+				<button @click="fun2">子标签</button>
+			</p>
+			<input @keyup.enter="getval" />
+		</div>
+		<script src="js/vue.js"></script>
+		<script>
+			
+			
+		var vm = new Vue({
+			 el:'#app',
+			 data:{
+				 msg:"hello"
+			 },methods:{
+				 sayhello(){
+					 console.log("hello world!");
+				 },
+				 fun1(){
+					 console.log("fun1");
+				 },
+				 fun2(){
+				 	console.log("fun2");
+				 },
+				 getval(){
+					 console.log(event.target.value);
+				 }
+				 
+			 }
+		})
+		
+		function test(){
+			console.log(vm.msg);
+			vm.sayhello();
+		}
+		
+		
+		</script>
+	</body>
+</html>

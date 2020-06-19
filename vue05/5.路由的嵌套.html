@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="app">
+			<!--一般vue实例的app标签内只有一个router-view
+			这样就可以根据路由，输入不同的路径显示不同的组件
+			-->
+			<router-view></router-view>
+		</div>
+		<template id="main">
+			<div>
+				<topheader></topheader>
+				<leftmenu style="width:20%;float:left"></leftmenu>
+				<rightcontent style="width:80%;float:left"></rightcontent>
+			</div>
+		</template>
+		<template id="topheader">
+			<header>
+				<h1>欢迎进入后台管理系统</h1>
+			</header>
+		</template>
+		<template id="leftmenu">
+			<div>
+				<ul>
+					<router-link tag="li" to="/menu1">菜单1</router-link>
+					<router-link tag="li" to="/menu2">菜单2</router-link>
+					<router-link tag="li" to="/login">退出</router-link>
+				</ul>
+			</div>
+		</template>
+		<template id="rightcontent">
+			<div>
+				<h1>欢迎您！</h1>
+				<router-view></router-view>
+			</div>
+		</template>
+		<template id="menu1">
+			<div>
+				<h1>菜单1的内容</h1>
+			</div>
+		</template>
+		<template id="menu2">
+			<div>
+				<h1>菜单2的内容</h1>
+			</div>
+		</template>
+		<template id="login">
+			<div>
+				<p>用户名：<input/></p>
+				<p>密码：<input/></p>
+				<p><button type="button" @click="$router.push('/main')">登陆</button></p>
+			</div>
+		</template>
+		<script src="js/vue.js"></script>
+		<script src="js/vue-router.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			const login = {template:"#login"}
+			const topheader = {template:"#topheader"}
+			const leftmenu = {template:"#leftmenu"}
+			const rightcontent = {template:"#rightcontent"}
+			const menu1 = {template:"#menu1"}
+			const menu2 = {template:"#menu2"}
+			const main = {template:"#main",
+			components:{
+				topheader, 
+				leftmenu,
+				rightcontent
+			}}
+			const routes =[
+				{path:"/main",component:main,
+					children:[
+						{path:"/menu1",component:menu1},
+						{path:"/menu2",component:menu2},
+					]
+				},
+				{path:"/login",component:login},
+				{path:"/",redirect:"/login"}
+			]
+			const router =  new VueRouter({
+				routes
+			})
+			
+			
+			
+			var vm = new Vue({
+				 el:'#app',
+				 router
+			})
+		</script>
+	</body>
+</html>

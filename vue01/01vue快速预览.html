@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="app">
+			<p v-if="hello">hello world</p>
+			<li v-for="name in names">
+				{{name}}
+			</li>
+			<p v-on:click="count++">请单击我{{count}}</p>
+			<button v-on:click="count++">+</button><span>{{count}}</span><button  v-on:click="decr">-</button>
+		</div>
+		<script src="js/vue.js"></script>
+		<script>
+		var vm = new Vue({
+			 el:'#app',
+			 data:{
+				 hello:true,
+				 names:["熊伟","张三","李四"],
+				 count:1
+			 },
+			 methods:{
+				 helloworld(){
+					 alert("hello")
+				 },
+				 decr(){
+					if(this.count>1){
+						this.count--;
+					}
+				 }
+				 
+			 }
+		})
+		</script>
+	</body>
+</html>

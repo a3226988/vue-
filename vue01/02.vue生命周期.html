@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="app">
+			{{name}}
+		</div>
+		<script src="js/vue.js"></script>
+		<script>
+		var vm = new Vue({
+			 el:'#app',
+			 data:{
+				 name:"张三"
+			 },
+			created:function(){
+				console.log("创建完毕！");
+			},
+			mounted:function(){
+				console.log("挂载完毕！");
+			},
+			updated:function(){
+				console.log("data更新完毕");
+			},
+			destroyed(){
+				console.log("实例销毁");
+			}
+		})
+		</script>
+	</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	</head>
+	<body>
+		<div id="app">
+			<div id="app1">
+				{{a}}-{{b}}--{{c}}
+				<hr>
+				{{methodA()}}--{{methodB()}}
+			</div>
+		</div>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			
+			var model = {
+					a:1,
+					b:2,
+					c:"你好"
+				}
+			
+			new Vue({
+				el:"#app1",
+				data:model,
+				methods:{
+					methodA:function(){
+						console.log("methodA");
+						return "methodA"
+					},
+					methodB(){
+						console.log("mthodB");
+						return "mthodB"
+					}
+				}
+			});
+			
+		</script>
+	</body>
+</html>

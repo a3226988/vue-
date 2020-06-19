@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="app">
+			{{now | formatDate}}
+			<hr>
+			{{price|formatPrice}}
+		</div>
+		<script src="js/vue.js"></script>
+		<script>
+			Vue.filter("formatDate",function(val){
+				console.log(val);
+				return  val.getFullYear()+":"+(val.getMonth()+1)+":"+val.getDate()
+			})
+			var vm = new Vue({
+				 el:'#app',
+				 data:{
+					 now:new Date(),
+					 price:88.8
+					 
+				 },
+				 filters:{
+					 formatPrice:function(val){
+						 return "$"+val.toFixed(2)+"刀"
+					 }
+				 }
+			})
+		</script>
+	</body>
+</html>

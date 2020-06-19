@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>父子组件的相互调用</title>
+	</head>
+	<body>
+		<div id="app">
+			<!--如果要通过父组件获取指定的某一个组件 ref-->
+			<mycom1 ref="aaa"></mycom1>
+			<mycom2></mycom2>
+			<hr>
+			<qtcom ref="bbb"></qtcom>
+			<button @click="getChildren">获取子组件</button>
+			<button @click="getRef">获取指定的子组件</button>
+		</div>
+		<template id="mycom1">
+			<div style="background-color: #0056B3;">
+				<h1>子组件</h1>
+				<button @click="getParent">获取父组件</button>
+				<button @click="getRoot">获取根组件</button>
+			</div>
+		</template>
+		<template id="qtcom">
+			<div>
+				<h1>嵌套组件</h1>
+				<mycom1></mycom1>
+			</div>
+		</template>
+		<script src="js/vue.js"></script>
+		<script>
+			var mycom1 = {
+				template:"#mycom1",
+				data:function(){
+					return {
+						name:"son"
+					}
+				},
+				methods:{
+					getParent:function(){
+					/* 	console.log("我的父组件：",this.$parent);
+						console.log(this.$parent.name);
+						this.$parent.sayhi() */
+						console.log("我的父组件的父组件：",this.$parent.$parent);
+							console.log(this.$parent.$parent.name);
+							this.$parent.$parent.sayhi()
+					},
+					getRoot:function(){
+						console.log("获取根节点：（vue实例）",this.$root);
+					},
+					sayhi(){
+						console.log("i am your son");
+					}
+				}
+			}
+			
+			var mycom2 = {
+				template:"#mycom1",
+				data:function(){
+					return {
+						name:"son"
+					}
+				},
+				methods:{
+					getParent:function(){
+						console.log("我的父组件：",this.$parent);
+						console.log(this.$parent.name);
+						this.$parent.sayhi()
+					},
+					sayhi(){
+						console.log("i am your son");
+					}
+				}
+			}
+			
+			var qtcom = {
+				template:"#qtcom",
+				components:{
+					mycom1
+				}
+			}
+			
+			var vm = new Vue({
+				 el:'#app',
+				 components:{
+					mycom1,mycom2,qtcom
+				 },
+				 data:{
+					 name:"baba"
+				 },
+				 methods:{
+					 sayhi:function(){
+						 console.log("i am your father");
+					 },
+					 getChildren(){
+						 console.log("我的子组件有：",this.$children);
+						 console.log(this.$children[0].name);
+						 this.$children[0].sayhi();
+					 },
+					 getRef:function(){
+						 console.log("根据ref获取组件：",this.$refs.aaa);
+					 }
+				 }
+			})
+			
+			//父组件给子组件传参：props
+			//子组件给父组件传参：this.$emit()
+			//在父组件中调用子组件的属性或方法
+			//父组件访问子组件：
+				//1 、this.$children获取所有子组件，返回一个数组
+				//2 、this.$refs.子组件上的ref属性的值 ，获取指定子组件对象
+			//在子组件中调用父组件的属性或方法
+				//1、 this.$parent 获取组件的父组件对象
+				//2、 this.$root  获取根组件（vue实例）
+		</script>
+		
+	</body>
+</html>

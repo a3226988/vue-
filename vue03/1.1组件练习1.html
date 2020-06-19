@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			* {
+				margin: 0px;
+				padding: 0px;
+				list-style: none;
+			}
+
+			.head {
+				height: 110px;
+				border-bottom: 1px solid #007BFF;
+
+			}
+
+			.head img {
+				vertical-align: middle;
+			}
+
+			.leftmenu {
+				height: 500px;
+				border-right: 1px solid #004085;
+				padding: 10px;
+			}
+
+			.leftmenu li {
+				text-align: center;
+				font-size: 26px;
+				height: 50px;
+				line-height: 50px;
+				border-bottom: 1px solid #0062CC;
+			}
+
+			.leftmenu li:hover {
+				background-color: rgba(88, 179, 169, 0.1);
+			}
+
+			.content {
+				padding: 10px;
+			}
+
+			.lunboimg {
+				position: relative;
+				width: 520px;
+				margin: 0px auto;
+			}
+
+			.change {
+				position: absolute;
+				color: white;
+				top: 40%;
+				font-size: 50px;
+				background-color: rgba(0, 0, 0, 0.3);
+				width: 40px;
+				height: 80px;
+				line-height: 75px;
+				text-align: center;
+			}
+
+			.left {
+				left: 0px;
+				border-radius: 0px 40px 40px 0px;
+			}
+
+			.right {
+				right: 0px;
+				border-radius: 40px 0px 0px 40px;
+			}
+
+			.left:hover,
+			.right:hover {
+				background-color: rgba(0, 0, 0, 0.5);
+				cursor: pointer;
+			}
+
+			.yuandian {
+				width: 100px;
+				height: 30px;
+				position: absolute;
+				left: 50%;
+				bottom: 0px;
+			}
+
+			.yuandian li {
+				list-style: none;
+				width: 15px;
+				height: 15px;
+				border-radius: 15px;
+				background-color: white;
+				float: left;
+				margin: 0px 5px;
+
+			}
+
+			.yuandian li:hover {
+				cursor: pointer;
+			}
+
+			.active {
+				background-color: yellow !important;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<my-main style="background-color: red;"></my-main>
+		</div>
+		<template id="myHeader">
+			<div class="head">
+				<h1>
+					<img src="img/bootstrap-solid.svg" width="100" height="100" />
+					Hello world!
+				</h1>
+			</div>
+		</template>
+		<template id="myLeft">
+			<ul class="leftmenu">
+				<li>菜单1</li>
+				<li>菜单2</li>
+				<li>菜单3</li>
+				<li>菜单4</li>
+				<li>菜单5</li>
+				<li>菜单6</li>
+			</ul>
+		</template>
+		<template id="myContent">
+			<div class="content">
+				<lunbo :imgsrcs="imgsrc1" :setintervaltime="1000"></lunbo>
+				<lunbo :imgsrcs="imgsrc2" :setintervaltime="3000"></lunbo>
+			</div>
+		</template>
+		<template id="myMain">
+			<div>
+				<my-header></my-header>
+				<div style="width: 20%;float: left;">
+					<my-left></my-left>
+				</div>
+				<div style="width: 80%;float: left;">
+					<my-content></my-content>
+				</div>
+			</div>
+		</template>
+		<template id="lunbo">
+			<div>
+				<div class="lunboimg">
+					<img :src="imgsrcs[currindex]">
+					<div class="change left" @click="currindex==0?currindex=imgsrcs.length-1:currindex--">
+						&lt;
+					</div>
+					<div class="change right" @click="imgchangeright">
+						&gt;
+					</div>
+					<ul class="yuandian">
+						<li v-for="l,index in imgsrcs" :class="{active:currindex==index}" @click="changimg(index)"></li>
+					</ul>
+				</div>
+			</div>
+		</template>
+		<script src="js/vue.js"></script>
+		<script>
+			Vue.component("myHeader", {
+				template: "#myHeader"
+			})
+			Vue.component("myLeft", {
+				template: "#myLeft"
+			})
+			Vue.component("myContent", {
+				template: "#myContent",
+				data: function() {
+					return {
+						imgsrc1: ["img/1.jpg",
+							"img/2.jpg",
+							"img/3.jpg"
+						],
+						imgsrc2: ["img/q1.jpg",
+						"img/q2.jpg","img/q3.jpg",
+						"img/q4.jpg","img/q5.jpg"]
+					}
+				}
+			})
+			Vue.component("myMain", {
+				template: "#myMain"
+			})
+			Vue.component("lunbo", {
+				template: "#lunbo",
+				props:["imgsrcs","setintervaltime"],
+				data: function() {
+					return {
+						/* imgsrcs: [
+							"img/1.jpg",
+							"img/2.jpg",
+							"img/3.jpg"
+						], */
+						currindex: 0
+					}
+				},
+				methods: {
+					imgchangeright: function() {
+						if (this.currindex < this.imgsrcs.length - 1)
+							this.currindex++
+						else
+							this.currindex = 0
+					},
+					changimg: function(index) {
+						this.currindex = index
+					}
+				},
+				computed: {
+
+				},
+				//生命周期钩子函数，在挂载时会自动调用
+				mounted: function() {
+					setInterval(this.imgchangeright, this.setintervaltime)
+				}
+			})
+			var vm = new Vue({
+				el: '#app'
+			})
+			
+			
+		</script>
+	</body>
+</html>

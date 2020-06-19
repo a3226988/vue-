@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			.b{
+				color: blue;
+			}
+			.r{
+				color: red;
+			}
+			
+			.bigfont{
+				font-size: 50px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			{{'a'.toUpperCase()}}
+			倒着输出helloworld:{{msg.split('').reverse().join("")}}
+			<hr>
+			<input v-model="msg" />
+			<hr>
+			<input  v-bind:value="msg" v-on:input="changeInput" />
+			<hr>
+			<p v-text="htmlstr">123</p>
+			<p v-html="htmlstr">123</p>
+			<p>123{{htmlstr}}</p>
+			<hr>
+			<a :href="url" v-bind:abc="msg">跳转</a>
+			<hr />
+			<p v-bind:class="{r:isred,bigfont:isbig}">绑定样式</p>
+			<hr>
+			<ul>
+				<li v-for="(name,index) in names" :class="{r:index==currindex}" @click="changetRed(index)">
+					{{index+'.'+name}}
+				</li>
+			</ul>
+		</div>
+		<script src="js/vue.js"></script>
+		<script>
+		var vm = new Vue({
+			 el:'#app',
+			 data:{
+				 msg:"hello world!",
+				 htmlstr : '<a href="https://www.baidu.com">超链接</a>',
+				 url:"https://www.baidu.com",
+				 isred:true,
+				 isbig:false,
+				 names:["熊伟","张三","李四"],
+				 currindex:0
+			 },
+			 methods:{
+				changeInput(){
+					this.msg = event.target.value;
+					//获取当前表单输入的内容，然后修改msg
+				},
+				changetRed(index){
+					this.currindex = index;
+				}
+			 }
+		})
+		</script>
+	</body>
+</html>

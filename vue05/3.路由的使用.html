@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="app">
+			<!--用来显示当前url指定的组件-->
+			<router-view></router-view>
+		</div>
+		
+		<template id="index">
+			<div>
+				<h1>首页</h1>
+				<router-view></router-view>
+				<router-link to="/reg">注册</router-link>
+				<router-link to="/login">登陆</router-link>
+				<!-- <router-link to="/index/reg">注册</router-link>
+				<router-link to="/index/login">登陆</router-link> -->
+			</div>
+		</template>
+		
+		<template id="login">
+			<div>
+				<p>账户：<input placeholder="请输入用户名" v-model="username" /></p>
+				<p>密码：<input placeholder="请输入密码" v-model="password" /></p>
+				<p><button @click="login">登陆</button></p>
+			</div>
+		</template>
+		<template id="register">
+			<div>
+				<p>账户：<input placeholder="请输入用户名"/></p>
+				<p>密码：<input placeholder="请输入密码"/></p>
+				<p>确认密码：<input placeholder="请输入密码"/></p>
+				<p><button>注册</button></p>
+			</div>
+		</template>
+		<template id="main">
+			<div>
+				<h1>登陆成功！</h1>
+			</div>
+		</template>
+		<script src="js/vue.js"></script>
+		<script src="js/vue-router.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			
+			//1、创建组件
+			/* const a = 1;  //const标识常量 与java的final类型
+			var  b = 1;
+			console.log(a,b); */
+			const login = {
+				template:"#login",
+				data:function(){
+					return {
+						username:'',
+						password:''
+					}
+				},
+				methods:{
+					login(){
+						if(this.username=="admin"&&this.password=="123"){
+							//登陆成功 跳转
+							this.$router.push("/main");
+						}else{
+							alert("用户名或密码错误！");
+						}
+					}
+				}
+			}
+			const register = {template:"#register"}
+			const main = {template:"#main"}
+			const index = {template:"#index"}
+			//使用路由
+			//编写的是地址与组件的映射
+			var routes = [
+					{path:"/",/* component:register */ redirect:"/login" },	
+					/* {path:"/login",component:login},
+					{path:"/reg",component:register}, */
+					{path:"/main",component:main},
+					{path:"/index",component:index,
+						//配置子路由
+						//子路由组件是在父路由对应的组件内的router-view标签渲染
+						children:[
+							/* {path:"login",component:login},
+							{path:"reg",component:register}, */
+							//如果定义为/xxx的path，那么相当于是绝对路径，不需要加上父路由的path
+							{path:"/login",component:login},
+							{path:"/reg",component:register}
+						]
+					}
+				]
+			//1、创建路由对象
+			var router = new VueRouter({
+				routes
+			});
+			var data = {
+				name:"张三",
+				age:12
+			}
+			const vm = new Vue({
+				 el:'#app',
+				 router,
+				 data,
+				 methods:{
+					 
+				 }
+			})
+			
+			
+		</script>
+	</body>
+</html>

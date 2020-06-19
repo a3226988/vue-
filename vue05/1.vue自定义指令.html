@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="app">
+			<p v-init.a="{name:'张三',age:14}"></p>
+			<span v-init.b="product">原来的内容</span>
+		</div>
+		<script src="js/vue.js"></script>
+		<script>
+			
+			var vm = new Vue({
+				 el:'#app',
+				 data:{
+					 product:{
+						 name:"笔记本",
+						 price:"3999.99"
+					 }
+				 },
+				 directives:{
+					 init:{
+						bind : function(el,binding){
+							console.log("指令应用的标签：",el);
+							console.log("binding:",binding);
+							//el.innerHTML += "Hello world!"
+							el.innerHTML += JSON.stringify(binding.value)
+						}
+					 }
+				 }
+			})
+		</script>
+	</body>
+</html>

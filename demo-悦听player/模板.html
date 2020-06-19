@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>悦听player</title>
+		<!-- 样式 -->
+		<link rel="stylesheet" href="./css/index.css">
+	</head>
+
+	<body>
+		<div class="wrap">
+			<!-- 播放器主体区域 -->
+			<div class="play_wrap" id="player">
+				<div class="search_bar">
+					<img src="images/player_title.png" alt="" />
+					<!-- 搜索歌曲 -->
+					<input type="text" autocomplete="off" v-model="query" @keyup.enter="searchMusic" />
+				</div>
+				<div class="center_con">
+					<!-- 搜索歌曲列表 -->
+					<div class='song_wrapper'>
+						<ul class="song_list">
+							<li v-for="song in queryMusic">
+								<a href="javascript:;" @click="playSong(song.id)"></a> <b>{{song.name}}-{{song.artists[0].name}}</b>
+								<!---->
+							</li>
+							<li><a href="javascript:;"></a> <b>你好</b> <span><i></i></span></li>
+						</ul>
+						<img src="images/line.png" class="switch_btn" alt="">
+					</div>
+					<!-- 歌曲信息容器 -->
+					<div class="player_con" :class="{playing:isPlay}">
+						<img src="images/player_bar.png" class="play_bar" />
+						<!-- 黑胶碟片 -->
+						<img src="images/disc.png" class="disc autoRotate" />
+						<img src="images/cover.png" class="cover autoRotate" />
+					</div>
+					<!-- 评论容器 -->
+					<div class="comment_wrapper">
+						<h5 class='title'>热门留言</h5>
+						<div class='comment_list'>
+							<dl>
+								<dt><img src="./images/person.png" alt=""></dt>
+								<dd class="name">盐焗西兰花</dd>
+								<dd class="detail">
+									绝对值得一听，吹爆
+								</dd>
+							</dl>
+						</div>
+						<img src="images/line.png" class="right_line">
+					</div>
+				</div>
+				<div class="audio_con">
+					<audio ref='audio' @play="play" @pause="pause" :src="url" controls autoplay loop class="myaudio"></audio>
+				</div>
+				<div class="video_con" style="display: none;">
+					<video controls="controls"></video>
+					<div class="mask"></div>
+				</div>
+			</div>
+		</div>
+		<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+		<script src="../vue01/js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../vue06/js/axios.js" type="text/javascript" charset="utf-8"></script>
+		<!-- 官网提供的 axios 在线地址 -->
+		<!--网易云的api   https://binaryify.github.io/NeteaseCloudMusicApi/#/ 
+		 https://autumnfish.cn/search?keywords=关键字  根据关键字搜索歌曲
+		 https://autumnfish.cn/song/url?id=id 根据id获取歌曲url
+		 https://autumnfish.cn/comment/music?id=id  根据id获取歌曲评论
+		 https://autumnfish.cn/song/detail?ids=347230  根据id获取歌曲详情
+		  -->
+		  
+		  <script type="text/javascript">
+		  	
+			var vm = new Vue({
+				el:"#player",
+				data:{
+					query:'',
+					queryMusic:[],
+					url:'',
+					isPlay:false
+				},
+				methods:{
+					searchMusic:function(){
+						//发送异步请求查询歌曲信息
+						axios.get("https://autumnfish.cn/search?keywords="+this.query)
+						.then(result=>{
+							vm.queryMusic = result.data.result.songs;
+						});
+					},
+					playSong:function(id){
+						axios.get("https://autumnfish.cn/song/url?id="+id)
+						.then(result=>{
+							vm.url = result.data.data[0].url
+						});
+					},
+					play:function(){
+						this.isPlay = true
+					},
+					pause:function(){
+						this.isPlay=false
+					}
+				}
+			})
+			
+		  </script>
+	</body>
+
+</html>

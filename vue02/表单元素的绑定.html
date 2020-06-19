@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="app">
+			<div style="width:300px;float:left" >
+				<h1>表单</h1>
+				<p>文本框：<input v-model.lazy="textval" /></p>
+				<p>数字框：<input type="number" v-model.lazy.number="num" /></p>
+				<p>单选按钮：
+				<input id="man" v-model="sex"  type="radio" value="1" /><label for="man">男</label>
+				<input v-model="sex" type="radio" value="2" />女</p>
+				<p>
+					复选框：
+					<input v-model="hobby" type="checkbox" value="java" />java
+					<input v-model="hobby" type="checkbox" value="c" />c
+					<input v-model="hobby" type="checkbox" value="vue" />vue
+				</p>
+				<p>
+					文本域：
+					<textarea v-model="textareaval"></textarea>
+				</p>
+				<p>
+					下拉框：
+					<select v-model="selval" multiple>
+						<option>1</option>
+						<option>2</option>
+						<option>3</option>
+						<option>4</option>
+						<option>5</option>
+					</select>
+				</p>
+			</div>
+			<div style="width:300px;float:left">
+				<h1>表单的值</h1>
+				<p>
+					文本框的值：{{textval}}
+				</p>
+				<p>
+					单选按钮的值：{{sex}}
+				</p>
+				<p>
+					复选框的值：{{hobby}}
+				</p>
+				<p>
+					文本域的值：{{textareaval}}
+				</p>
+				<p>
+					下拉框的值：{{selval}}
+				</p>
+				<p>
+					数字框的值：{{typeof num}}
+				</p>
+			</div>
+		</div>
+		<script src="js/vue.js"></script>
+		<script>
+			function getsex(){
+				console.log(document.getElementById("man").value);
+			}
+			
+		var vm = new Vue({
+			 el:'#app',
+			 data:{
+				 textval : "请输入数据",
+				 sex:'0',
+				 hobby:["java"],
+				 textareaval:"文本域的默认内容",
+				 selval:"2",
+				 num:100
+			 }
+		})
+		</script>
+	</body>
+</html>

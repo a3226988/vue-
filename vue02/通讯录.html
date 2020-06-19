@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+		<script src="js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/bootstrap.bundle.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div id="app" class="container">
+			<h1 class="text-center">通讯录</h1>
+			<p>
+				<input class="form-control" v-model="searchkey" placeholder="请输入要搜索的电话或联系人" />
+			</p>
+			<ul class="list-group">
+				<li class="list-group-item" v-for="c in searchresult">
+					{{c.name}}-{{c.phonenum}}
+					<button type="button" class="close" aria-label="关闭">
+					  <span aria-hidden="true">&times;</span>
+					</button>
+				</li>
+			</ul>
+			<button class="btn btn-info form-control fixed-bottom" data-toggle="modal" data-target="#exampleModal">添加联系人</button>
+			<!-- Modal -->
+			<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+					<input class="form-control" placeholder="请输入联系人名称" v-model="person.name" />
+					<input class="form-control" placeholder="请输入联系人电话" v-model="person.phonenum"/>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			        <button type="button" class="btn btn-primary" @click="addConact" >添加联系人</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+		
+		</div>
+		<script src="js/vue.js"></script>
+		<script>
+			
+			//1、进入页面显示联系人列表
+			//2、在搜索框内容输入联系人名称或联系人电话都能显示对应联系人信息
+			//3、点击X，删除联系人
+			//4、点击添加联系人，弹出模态窗口，输入联系人姓名和电话，添加联系人到列表
+		var vm = new Vue({
+			 el:'#app',
+			 data:{
+				 concatlist:[
+					 {name:"张三1",phonenum:"13485234234"},
+					 {name:"李四",phonenum:"1597506546"},
+					 {name:"王五",phonenum:"1802131231"},
+					 {name:"熊伟4",phonenum:"165123123"},
+					 {name:"李进",phonenum:"1439123123123"},
+					 {name:"李荣亚",phonenum:"110343243423"}
+				 ],
+				 searchkey : '',
+				 person:{name:'',phonenum:''}
+			 },
+			 computed:{
+				 searchresult:function(){
+					 //根据搜索的条件，返回符合条件的数组
+					 return this.concatlist.filter(c=>{
+						 return c.name.indexOf(this.searchkey)!=-1 || c.phonenum.indexOf(this.searchkey)!=-1
+					 })
+				 }
+			 },
+			 methods:{
+				 addConact(){
+					 //var newper = {name:this.person.name,phonenum:this.person.phonenum}
+					 this.concatlist.push(this.person);
+					 //把当前的person对象清空，并重置为新对象
+					 this.person = {name:'',phonenum:''}
+					 //关闭模态窗
+					 $("#exampleModal").modal('hide');
+				 }
+			 }
+		})
+		</script>
+	</body>
+</html>

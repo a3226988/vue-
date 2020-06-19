@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="app">
+			<mycom>
+				<template v-slot:first="slotattr">
+					<h1>姓：{{slotattr.firstname}}</h1>
+				</template>
+				<template v-slot:second="slotattr">
+					<h2>名：{{slotattr.lastname}}</h2>
+				</template>
+			</mycom>
+		</div>
+		<template id="mycom">
+			<div>
+				<slot name="first" :firstname="firstname" >第一个插槽</slot>
+				<h1>组件的内容</h1>
+				<slot name="second" :lastname="lastname">插槽默认的内容</slot>
+			</div>
+		</template>
+		<script src="js/vue.js"></script>
+		<script>
+			var mycom  = {
+				template:"#mycom",
+				data:function(){
+					return {
+						firstname:"张",
+						lastname:"三",
+					}
+				}
+			}
+			var vm = new Vue({
+				 el:'#app',
+				 components:{
+					mycom 
+				 }
+			})
+		</script>
+	</body>
+</html>

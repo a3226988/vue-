@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="app">
+			<!--组件上可以直接添加标签的属性，那么该属性直接会应用在组件的根标签上
+				如果这个属性是组件内通过props声明的属性，那么该属性的值会被赋值到组件的属性数据中
+			-->
+			<mycom id="m1" style="background-color: #20C997;" :myname="name"></mycom>
+			<mycom id="m2" style="color: #0056B3;" myname="李四"></mycom>
+			{{name}}
+		</div>
+		<template id="mycom">
+			<!--在组件内不能直接访问父组件的数据-->
+			<div>
+				hello world!{{newname}}
+				<button @click="name='123'">改变姓名</button>
+			</div>
+		</template>
+		<script src="js/vue.js"></script>
+		<script>
+			//全局注册
+			//Vue.component("id"，{})
+			var vm = new Vue({
+				 el:'#app',
+				 data:{
+					 name:"张三"
+				 },
+				 components:{
+					 mycom:{
+						 template:"#mycom",
+						 props:["myname"],
+						data:function(){
+							 return {
+								 newname:""
+							 }
+						 },
+						 computed:{
+							 name:{
+								 get(){
+									return this.newname=this.myname
+								 },
+								 set(n){
+									 this.newname = n
+								 }
+							 }
+						 }
+					 }
+				 }
+			})
+		
+		
+		
+		
+		
+		</script>
+	</body>
+</html>

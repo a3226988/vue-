@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			.blue{
+				color: blue;
+			}
+			.red{
+				color: red;
+			}
+			.bigfont{
+				font-size: 50px;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<!--指令修饰符-->
+			<div @click="divclick">
+				<a href="http://www.baidu.com" @click.prevent.stop="aclick">惦记我</a>
+				<p>div里面的p</p>
+			</div>
+			<div>
+					<p v-if="getflag()">v-if表达式为真会显示的内容</p>
+					<p v-show="getflag()">v-show表达式为真会显示的内容</p>
+			</div>
+			<div >
+				循环指定次数：
+				<p v-for="i in 10">
+					第{{i}}次
+				</p>
+				循环一个对象(对象的属性值，对象的属性名称，下标)
+				<p v-for="(o,a,b) in person">
+					{{a}}:{{o}}--{{b}}
+				</p>
+				循环一个数组(数组元素，数组的下标)
+				<p v-for="(val,index) in arr1">
+					{{val}}--{{index}}
+				</p>
+				循环一个对象数组
+				<p v-for="(val,index) in arr2">
+					{{val.a}}--{{val.b}}--{{index}}
+				</p>
+				循环一个字符串
+				<p v-for="s in str" >
+					{{s}}
+				</p>
+			</div>
+			<div>
+				<!--使用对象形式绑定类样式 ： 
+				{类样式名称：布尔值}
+				布尔值为真那么该标签应用该样式，否则就不应用
+				-->
+				<p :class="{red:getflag(),bigfont:getflag()}">使用v-bind绑定样式</p>
+				<!--使用对象形式绑定style样式 ：
+				{样式名称：样式值}
+				布尔值为真那么该标签应用该样式，否则就不应用
+				-->
+				<p :style="{fontSize:fontsize+'px'}" @click="fontsize++">使用：style绑定的样式</p>
+			</div>
+		</div>
+		<script src="js/vue.js"></script>
+		<script>
+		var vm = new Vue({
+			 el:'#app',
+			 data:{
+				flag : 0,
+				str:"helloworld",
+				fontsize : 10,
+				person:{
+					id:1,
+					name:"熊伟",
+					age:20
+				},
+				red:"red",
+				arr1:[
+					"hello","java","c","html"
+				],
+				arr2:[
+					{"a":this.arr1,b:this.person},
+					{"a":["a","b","c"],b:{id:2,name:"张三",age:22}}
+				]
+			 },
+			 methods:{
+				 aclick:function(){
+					 //event.preventDefault()
+					 //event.stopPropagation()
+					 console.log("a标签被点击");
+				 },
+				 divclick:function(){
+					 console.log("div标签点击");
+				 },
+				 getflag:function(){
+					 return true;
+				 }
+			 }
+		})
+		</script>
+	</body>
+</html>

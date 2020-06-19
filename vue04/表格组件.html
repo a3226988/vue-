@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="app">
+			<h1>实现一个表格组件，可以根据传入的数组自动显示所有数据，并提供删除功能</h1>
+			<mytbl :arr="persons" :my-border="0" :page-num="3"></mytbl>
+			<mytbl :arr="concatlist" :width="1000"></mytbl>
+			<mytbl :arr="products" :my-border="5" :width="300"></mytbl>
+		</div>
+		<template id="mytb">
+			<div>
+				<table :border="myBorder" :width="width">
+					<tr><th>序号</th> <th v-for="val,key in arr[0]">{{key}}</th> <th>操作</th></tr>
+					<tr v-for="item,index in pagelist"><td>{{index+1}}</td> <td v-for="val in item">{{val}}</td> <td><button @click="arr.splice(index,1)">删除</button></td></tr>
+				</table>
+				<page @prev="changePageNum" @next="changePageNum" :data-length="arr.length">
+					<template v-slot="pageattr">
+						当前页/总页数/每页显示条数【{{pageattr.pn}}，{{pageattr.sp}}，{{pageattr.ps}}】
+					</template>
+				</page>
+			</div>
+		</template>
+		<template id="page">
+			<div>
+				<!-- <span>总页数：{{sumPage}}</span> -->
+				<slot :pn="pageNum" :sp="sumPage" :ps="pageSize">总页数：{{sumPage}}</slot>
+				<button @click="prev">上一页</button>
+				<button @click="next">下一页</button>
+			</div>
+		</template>
+		<script src="js/vue.js"></script>
+		<script>
+			var page = {
+				template:"#page",
+				data:function(){
+					return {
+						pageNum : 1
+					}
+				},
+				props:{
+					dataLength : {
+						type:Number,
+						required:true
+					},
+					pageSize:{
+						type:Number,
+						default:2
+					}
+				},
+				methods:{
+					prev:function(){
+						if(this.pageNum>1){
+							this.pageNum--;
+							this.$emit("prev",this.pageNum);
+						}
+					},
+					next:function(){
+						if(this.pageNum<this.sumPage){
+							this.pageNum++;
+							this.$emit("next",this.pageNum);
+						}
+					}
+				},
+				computed:{
+					sumPage:function(){
+						return parseInt((this.dataLength-1)/this.pageSize+1);
+					}
+				}
+			}
+			var mytbl = {
+				template:"#mytb",
+				//props:["arr","border","width"]
+				components:{
+					page
+				},
+				data:function(){
+					return {
+						pn : this.pageNum
+					}
+				},
+				props:{
+					arr:{
+						type:Array,
+						required:true
+					},
+					myBorder:{
+						type:Number,
+						default:1
+					},
+					width:{
+						type:Number,
+						default:500
+					},
+					pageNum:{
+						type:Number,
+						default:1
+					},
+					pageSize:{
+						type:Number,
+						default:2
+					}
+				},
+				computed:{
+					pagelist:function(){
+						var start = (this.pn-1)*this.pageSize;
+						var end = this.pn*this.pageSize;
+						return this.arr.slice(start,end)
+					}
+				},
+				methods:{
+					changePageNum:function(pageNum){
+						this.pn = pageNum;
+					}
+				}
+			}
+			
+			var vm = new Vue({
+				el: '#app',
+				components:{
+					mytbl
+				},
+				data: {
+					persons: [{
+							name: "张三1",
+							age: 21
+						},
+						{
+							name: "张三2",
+							age: 22
+						},
+						{
+							name: "张三3",
+							age: 23
+						},
+						{
+							name: "张三4",
+							age: 24
+						},
+						{
+							name: "张三5",
+							age: 25
+						},
+						{
+							name: "张三6",
+							age: 25
+						},
+						{
+							name: "张三7",
+							age: 25
+						},
+						{
+							name: "张三8",
+							age: 25
+						}
+					],
+					concatlist: [{
+							name: "张三1",
+							phonenum: "13485234234"
+						},
+						{
+							name: "李四",
+							phonenum: "1597506546"
+						},
+						{
+							name: "王五",
+							phonenum: "1802131231"
+						},
+						{
+							name: "熊伟4",
+							phonenum: "165123123"
+						},
+						{
+							name: "李进",
+							phonenum: "1439123123123"
+						},
+						{
+							name: "李荣亚",
+							phonenum: "110343243423"
+						}
+					],
+					products: [{
+							ck: false,
+							name: "iphone",
+							price: 88.8,
+							num: 1
+						},
+						{
+							ck: false,
+							name: "小碗熊方便面",
+							price: 3.5,
+							num: 1
+						},
+						{
+							ck: false,
+							name: "腊肠",
+							price: 20,
+							num: 1
+						},
+						{
+							ck: false,
+							name: "南极人的袜子",
+							price: 9.9,
+							num: 1
+						},
+						{
+							ck: false,
+							name: "AJ",
+							price: 888.8,
+							num: 1
+						}
+					]
+				}
+			})
+		</script>
+	</body>
+</html>

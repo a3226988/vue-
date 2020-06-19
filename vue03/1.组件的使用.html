@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="app">
+			<mycomponent></mycomponent>
+			<mycomponent></mycomponent>
+			<my-table></my-table>
+		</div>
+		<template id="mytb">
+			<table>
+				<tr><td>序号</td><td>列名</td><td>列名</td></tr>
+				<tr><td>1</td><td>列名</td><td>列名</td></tr>
+				<tr><td>2</td><td>列名</td><td>列名</td></tr>
+				<tr><td>3</td><td>列名</td><td>列名</td></tr>
+				<tr><td>4</td><td>列名</td><td>列名</td></tr>
+			</table>
+		</template>
+		<script src="js/vue.js"></script>
+		<script>
+			//创建一个名称为mycomponent的组件
+			//组件的内容只允许有一个根节点
+			Vue.component("mycomponent",{
+				data:function(){
+					return {
+						count:1
+					}
+				},
+				//组件的内容
+				template:"<p v-on:click='count++'>hello world{{count}}!</p>"
+			})
+			
+			Vue.component("myTable",{
+				/* template:`
+				<table>
+					<tr><td>序号</td><td>列名</td><td>列名</td></tr>
+					<tr><td>1</td><td>列名</td><td>列名</td></tr>
+					<tr><td>2</td><td>列名</td><td>列名</td></tr>
+					<tr><td>3</td><td>列名</td><td>列名</td></tr>
+					<tr><td>4</td><td>列名</td><td>列名</td></tr>
+				</table>
+				` */
+				template:"#mytb"
+			})
+			
+		var vm = new Vue({
+			 el:'#app'
+		})
+		</script>
+	</body>
+</html>
